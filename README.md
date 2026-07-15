@@ -1,107 +1,125 @@
-# Food Donation System
+# 🍲 Food Donation System
 
-A modern, full-stack web application designed to connect food donors with organizations, volunteers, or people in need to reduce food waste and support communities.
+[![React](https://img.shields.io/badge/React-19.0-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
+[![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-v4.0-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![NodeJS](https://img.shields.io/badge/Node.js-18+-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
+[![ExpressJS](https://img.shields.io/badge/Express.js-5.x-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-Database-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
+[![License](https://img.shields.io/badge/License-ISC-blue.svg?style=for-the-badge)](https://opensource.org/licenses/ISC)
 
----
-
-## 🚀 Key Features
-
-* **Donor Dashboard**: Access overview statistics, track active/delivered donations, and manage new listings.
-* **Interactive Data Visualization**: Real-time charts demonstrating donation trends and distributions using Recharts.
-* **Authentication & Authorization**: Secure user registration, login, and password management with JWT tokens.
-* **Image Uploads**: Dynamic food listing image uploads managed via Multer.
-* **Responsive Modern UI**: Styled with Tailwind CSS, animated with Framer Motion, and built on React 19 with Vite.
-* **Security & Performance**: Enhanced server protection using Helmet, Express Rate Limiter, and bcryptjs passwords.
+> A modern, full-stack digital platform designed to bridge the gap between food donors (restaurants, hotels, events, individuals) and organizations/volunteers in need. By optimizing distribution logistics and listing real-time availability, this platform aims to drastically reduce food waste and support vulnerable communities.
 
 ---
 
-## 🛠️ Tech Stack
+## ✨ Features & Capabilities
 
-### Frontend
-* **Core**: React 19, Vite
-* **Styling**: Tailwind CSS (v4)
-* **Routing**: React Router DOM (v7)
-* **State & Forms**: React Hook Form, Zod (validation)
-* **Animation & Icons**: Framer Motion, React Icons
-* **Charts**: Recharts
-* **API Client**: Axios
+### 👤 Donor Portal
+* **Intuitive Statistics**: Monitor key donation metrics (total, active, claimed, and delivered donations) directly from a sleek analytics dashboard.
+* **Instant Listing Creation**: Post new food items in seconds with image uploads, item details, quantities, and expiration indicators.
+* **Interactive Timeline**: Track live statuses of all donated items as they move from *Available* to *Claimed* and *Delivered*.
 
-### Backend
-* **Runtime**: Node.js
-* **Framework**: Express.js
-* **Database**: MongoDB (Mongoose ODM)
-* **Authentication**: JSON Web Tokens (JWT), bcryptjs
-* **Upload Handler**: Multer
+### 🛡️ Secure Platform Infrastructure
+* **JSON Web Token (JWT) Auth**: End-to-end security via state-based cookies (`cookie-parser`) and token authentication.
+* **Granular Validation**: Frontend validation powered by **Zod** schema structures coupled with **React Hook Form** for zero-latency user experience.
+* **Server Shielding**: Embedded security layers utilizing **Helmet** headers, **bcryptjs** password hashing, and **Express Rate Limiting** to prevent API abuse.
 
 ---
 
-## 📂 Project Structure
+## 🛠️ Architecture & Tech Stack
+
+| Frontend Layer | Backend Core | Database & File System |
+| :--- | :--- | :--- |
+| **React 19 & Vite** (Core framework) | **Node.js & Express.js** (REST API) | **MongoDB & Mongoose** (ODM) |
+| **Tailwind CSS v4** (Utility styling) | **JSON Web Tokens (JWT)** (Session Auth) | **Multer Storage** (Food asset uploads) |
+| **Framer Motion** (Micro-animations) | **bcryptjs** (Encryption engine) | |
+| **Recharts** (Interactive data visualization) | **Helmet & Express Rate Limit** (Security) | |
+
+---
+
+## 📂 Repository Architecture
 
 ```text
 FoodDonationSystem/
-├── client/                 # Frontend React application
+├── client/                     # Frontend client build context
 │   ├── src/
-│   │   ├── components/     # Reusable components (common, feedback)
-│   │   ├── pages/          # Page layouts (admin, auth, public)
-│   │   └── App.jsx
-│   ├── package.json
-│   └── vite.config.js
-├── server/                 # Backend Node.js API
-│   ├── config/             # DB & Config parameters
-│   ├── controllers/        # Business logic controllers
-│   ├── models/             # Mongoose schemas
-│   ├── routes/             # Express API endpoints
-│   ├── uploads/            # Uploaded food images
-│   ├── package.json
-│   └── server.js
-└── .gitignore
+│   │   ├── components/         # Global layout, feedback & UI elements
+│   │   ├── pages/              # Admin pages, Authentication & Dashboard layouts
+│   │   ├── services/           # Axios HTTP client instances
+│   │   └── App.jsx             # Main application router
+│   ├── package.json            # Client dependencies and build tasks
+│   └── vite.config.js          # Vite and Tailwind config
+├── server/                     # Backend server build context
+│   ├── config/                 # Database connector files
+│   ├── controllers/            # Request handlers (auth, donation, dashboard)
+│   ├── models/                 # Mongoose schemas (User, Donation)
+│   ├── routes/                 # Express API endpoints
+│   ├── uploads/                # Disk storage folder for uploaded food images
+│   └── server.js               # Application entry point
+├── .gitignore                  # Git exclude list
+└── README.md                   # Repository documentation
 ```
 
 ---
 
-## 💻 Setup & Installation
+## 🚀 Setup & Launch Protocol
 
-### Prerequisites
-Make sure you have [Node.js](https://nodejs.org/) and [MongoDB](https://www.mongodb.com/) installed on your machine.
+<details>
+<summary>📋 Prerequisites</summary>
 
-### 1. Backend Setup
-1. Navigate to the `server/` directory:
+Ensure you have the following installed on your machine:
+* [Node.js](https://nodejs.org/) (Version 18 or above recommended)
+* [MongoDB Community Server](https://www.mongodb.com/try/download/community) (Or a MongoDB Atlas URI)
+</details>
+
+<details>
+<summary>⚙️ Backend Installation & Setup</summary>
+
+1. Navigate to the server folder:
    ```bash
    cd server
    ```
-2. Install dependencies:
+2. Install npm dependencies:
    ```bash
    npm install
    ```
-3. Create a `.env` file in the `server/` directory:
+3. Configure your local environment by creating a `.env` file in the `server/` directory:
    ```env
    PORT=5000
-   MONGO_URI=your_mongodb_connection_string
-   JWT_SECRET=your_jwt_secret_key
+   MONGO_URI=mongodb://localhost:27017/foodDonation
+   JWT_SECRET=your_super_secret_jwt_signature_key
    ```
-4. Start the backend server in development mode:
+4. Start the Express development server (using Nodemon):
    ```bash
    npm run dev
    ```
+</details>
 
-### 2. Frontend Setup
-1. Navigate to the `client/` directory:
+<details>
+<summary>💻 Frontend Installation & Setup</summary>
+
+1. Navigate to the client folder:
    ```bash
    cd client
    ```
-2. Install dependencies:
+2. Install npm dependencies:
    ```bash
    npm install
    ```
-3. Start the frontend development server:
+3. Launch the Vite development server:
    ```bash
    npm run dev
    ```
+4. Open your browser and navigate to `http://localhost:5173` (or the port specified in your Vite output).
+</details>
 
 ---
 
-## 🤝 Contributing
-Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/prathmesh4001/FoodDonationSystem/issues) if you want to contribute.
+## 🤝 Community & Support
+
+* **Issues**: Found a bug or have a suggestion? Open an issue in our [GitHub Issues](https://github.com/prathmesh4001/FoodDonationSystem/issues) tab.
+* **Contributions**: Pull requests are welcome. Please ensure that all changes adhere to standard linting rules before submitting.
+
+---
 
 ## 📄 License
-This project is licensed under the ISC License.
+This project is licensed under the **ISC License**.
