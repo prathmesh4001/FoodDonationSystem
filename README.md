@@ -122,14 +122,4 @@ Ensure you have the following installed on your machine:
 * **📊 Carbon Footprint Savings Tracker**: Show metric impact dashboards representing estimated carbon/water footprints saved by preventing food waste.
 * **🏆 Gamification & Impact Leaderboard**: Reward top donors and active volunteers with karma badges and public highlights to boost community engagement.
 
----
 
-## 🤝 Community & Support
-
-* **Issues**: Found a bug or have a suggestion? Open an issue in our [GitHub Issues](https://github.com/prathmesh4001/FoodDonationSystem/issues) tab.
-* **Contributions**: Pull requests are welcome. Please ensure that all changes adhere to standard linting rules before submitting.
-
----
-
-## 📄 License
-This project is licensed under the **ISC License**.
