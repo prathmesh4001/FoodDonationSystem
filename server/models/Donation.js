@@ -12,6 +12,12 @@ const donationSchema = new mongoose.Schema(
             required: true,
         },
 
+        quantityUnit: {
+            type: String,
+            enum: ["pieces", "dozens", "servings", "kg", "grams", "vessels", "packets", "boxes", "bunches", "liters", "ml", "bottles", "cans"],
+            required: false,   // not required so old donations without unit don't break
+        },
+
         location: {
             type: String,
             required: true,
@@ -24,6 +30,13 @@ const donationSchema = new mongoose.Schema(
 
         description: {
             type: String,
+            required: true,
+        },
+
+        category: {
+            type: String,
+            enum: ["Cooked Food", "Packaged Food", "Dry Food", "Fresh Produce", "Beverages", "Other"],
+            default: "Other",
             required: true,
         },
 

@@ -44,8 +44,12 @@ app.use(
   })
 );
 
-app.use(helmet());
-app.use(limiter);
+app.use(
+  helmet({
+    crossOriginResourcePolicy: { policy: "cross-origin" },
+  })
+);
+// app.use(limiter); // Disabled for local development testing to prevent rate limit blocks
 app.use(express.json());
 
 

@@ -1,111 +1,257 @@
+@import "tailwindcss";
+
+/* ═══════════════════════════════════════════════════
+   DARK MODE — Disabled: use class strategy so dark:
+   variants ONLY activate when .dark is on <html>.
+   Since we never add .dark, all dark: styles are
+   permanently inert regardless of OS preference.
+   ═══════════════════════════════════════════════════ */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ═══════════════════════════════════════════════════
+   DESIGN TOKENS — Light-only, professional theme
+   ═══════════════════════════════════════════════════ */
+@theme {
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-display: 'Poppins', 'Inter', system-ui, sans-serif;
+
+  --color-brand-50:  #f0fdf4;
+  --color-brand-100: #dcfce7;
+  --color-brand-200: #bbf7d0;
+  --color-brand-300: #86efac;
+  --color-brand-400: #4ade80;
+  --color-brand-500: #22c55e;
+  --color-brand-600: #16a34a;
+  --color-brand-700: #15803d;
+  --color-brand-800: #166534;
+  --color-brand-900: #14532d;
+  --color-brand-950: #052e16;
+
+  --color-navy-700: #1e3a8a;
+  --color-navy-800: #1a3a6b;
+  --color-navy-900: #0f2044;
+
+  --color-accent-400: #fb923c;
+  --color-accent-500: #f97316;
+  --color-accent-600: #f58220;
+
+  --color-surface-50:  #f8fafc;
+  --color-surface-100: #f1f5f9;
+  --color-surface-200: #e2e8f0;
+  --color-surface-300: #cbd5e1;
+  --color-surface-400: #94a3b8;
+  --color-surface-500: #64748b;
+  --color-surface-600: #475569;
+  --color-surface-700: #334155;
+  --color-surface-800: #1e293b;
+  --color-surface-900: #0f172a;
+  --color-surface-950: #020617;
+}
+
+/* ═══════════════════════════════════════════════════
+   CSS CUSTOM PROPERTIES — Single light theme
+   ═══════════════════════════════════════════════════ */
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  /* Force light mode — prevent OS dark mode from activating dark: variants */
+  color-scheme: light;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+  --bg-page:          #ffffff;
+  --bg-alt:           #eef6ff;   /* light blue-tinted alternate section */
+  --bg-alt2:          #f4f8fc;   /* very light gray */
+  --bg-card:          #ffffff;
+  --bg-input:         #ffffff;
+  --bg-navbar:        #ffffff;
+  --bg-sidebar:       #ffffff;
+  --bg-footer:        #0f2044;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --text-heading:     #1a3a6b;   /* deep navy */
+  --text-body:        #374151;
+  --text-muted:       #6b7280;
+  --text-subtle:      #9ca3af;
 
-  @media (max-width: 1024px) {
-    font-size: 16px;
+  --border-default:   #e2e8f0;
+  --border-card:      #e5eaf2;
+
+  --color-primary:    #16a34a;
+  --color-primary-h:  #15803d;
+  --color-secondary:  #1a3a6b;
+  --color-secondary-h:#0f2044;
+  --color-accent:     #f58220;
+
+  --shadow-sm:  0 1px 4px 0 rgba(26,58,107,0.07);
+  --shadow-card: 0 2px 10px 0 rgba(26,58,107,0.07), 0 1px 3px 0 rgba(0,0,0,0.05);
+  --shadow-card-hover: 0 10px 30px -4px rgba(26,58,107,0.14), 0 4px 8px -2px rgba(26,58,107,0.07);
+  --shadow-nav: 0 2px 16px 0 rgba(26,58,107,0.09);
+  --shadow-btn: 0 4px 14px 0 rgba(22,163,74,0.28);
+
+  --sidebar-active-bg:   #16a34a;
+  --sidebar-active-text: #ffffff;
+  --sidebar-hover-bg:    #f0fdf4;
+  --sidebar-text:        #374151;
+}
+
+/* ═══════════════════════════════════════════════════
+   BASE RESET
+   ═══════════════════════════════════════════════════ */
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  margin: 0;
+  font-family: var(--font-sans);
+  background-color: var(--bg-page);
+  color: var(--text-body);
+  line-height: 1.65;
 }
 
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  color: var(--text-heading);
+  line-height: 1.25;
+}
+
+/* ═══════════════════════════════════════════════════
+   SCROLLBAR
+   ═══════════════════════════════════════════════════ */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #f1f5f9; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+/* ═══════════════════════════════════════════════════
+   GRADIENT TEXT
+   ═══════════════════════════════════════════════════ */
+.gradient-text {
+  background: linear-gradient(135deg, #16a34a 0%, #22c55e 55%, #f58220 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ═══════════════════════════════════════════════════
+   GLASS
+   ═══════════════════════════════════════════════════ */
+.glass {
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.5);
+}
+
+/* ═══════════════════════════════════════════════════
+   SKELETON SHIMMER
+   ═══════════════════════════════════════════════════ */
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 6px;
+}
+
+/* ═══════════════════════════════════════════════════
+   FOCUS RING
+   ═══════════════════════════════════════════════════ */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* ═══════════════════════════════════════════════════
+   TRANSITIONS — targeted, no global * rule
+   ═══════════════════════════════════════════════════ */
+body, header, footer, nav, aside, main, section, article,
+div, span, p, h1, h2, h3, h4, h5, h6,
+button, a, input, textarea, select, label, li, ul,
+table, thead, tbody, tr, th, td {
+  transition-property: background-color, border-color, color, box-shadow, opacity;
+  transition-duration: 180ms;
+  transition-timing-function: ease;
+}
+
+button, a[href], [role="button"] {
+  transition-property: background-color, border-color, color, box-shadow, transform, opacity;
+  transition-duration: 160ms;
+  transition-timing-function: ease;
+}
+
+/* ═══════════════════════════════════════════════════
+   PAGE ENTER
+   ═══════════════════════════════════════════════════ */
+.page-enter {
+  opacity: 0;
+  transform: translateY(8px);
+}
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 300ms ease, transform 300ms ease;
+}
+
+/* ═══════════════════════════════════════════════════
+   SIDEBAR NAVIGATION ITEMS
+   ═══════════════════════════════════════════════════ */
+.sidebar-nav-item {
   display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-}
-
-h1,
-h2 {
-  font-family: var(--heading);
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 9px;
+  font-size: 14px;
   font-weight: 500;
-  color: var(--text-h);
+  text-decoration: none;
+  color: var(--sidebar-text);
+  background: transparent;
+  transition: all 0.18s ease;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
 }
 
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
-  margin: 0;
+.sidebar-nav-item:hover {
+  background: var(--sidebar-hover-bg);
+  color: var(--color-primary);
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+.sidebar-nav-item.active {
+  color: var(--sidebar-active-text) !important;
+  background: var(--sidebar-active-bg) !important;
+  box-shadow: 0 4px 10px rgba(22,163,74,0.22);
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+/* ═══════════════════════════════════════════════════
+   DISABLE BROWSER AUTOFILL YELLOW/BLUE BACKGROUND
+   ═══════════════════════════════════════════════════ */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
+  -webkit-text-fill-color: var(--text-body) !important;
 }
+
+/* ═══════════════════════════════════════════════════
+   ACCORDION CHEVRON ANIMATION
+   ═══════════════════════════════════════════════════ */
+details summary svg {
+  transition: transform 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+details[open] summary svg {
+  transform: rotate(180deg);
+}
+

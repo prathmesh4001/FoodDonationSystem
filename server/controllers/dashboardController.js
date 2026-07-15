@@ -1,6 +1,7 @@
 const Donation = require("../models/Donation");
 const User = require("../models/User");
 
+
 const donorDashboard = async(req, res) => {
 
     try {
@@ -31,7 +32,6 @@ const donorDashboard = async(req, res) => {
 
 
         //send response
-
         res.status(200).json({
             success: true,
             dashboard: {
@@ -40,7 +40,6 @@ const donorDashboard = async(req, res) => {
                 claimedDonations,
                 deliveredDonations,
             },
-            
         });
 
 

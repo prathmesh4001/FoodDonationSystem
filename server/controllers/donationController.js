@@ -9,13 +9,15 @@ const addDonation = async (req, res)  => {
         const {
             foodName,
             quantity,
+            quantityUnit,
             location,
             expiryTime,
             description,
+            category,
         } = req.body;
 
-        
-        // INPUT VALIDATION
+
+        const VALID_CATEGORIES = ["Cooked Food", "Packaged Food", "Dry Food", "Fresh Produce", "Beverages", "Other"];
 
         // Remove extra spaces
         const trimmedFoodName = foodName ? foodName.trim() : "";
@@ -84,14 +86,25 @@ const addDonation = async (req, res)  => {
              message: "Description cannot exceed 500 characters",
             });
         }
+
+        // Category Validation
+        const trimmedCategory = category ? category.trim() : "Other";
+        if (!VALID_CATEGORIES.includes(trimmedCategory)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid food category",
+            });
+        }
         // CREATE DONATIOn
 
         const donation = new Donation({
             foodName: trimmedFoodName,
             quantity,
+            quantityUnit: quantityUnit || undefined,
             location: trimmedLocation,
             expiryTime: trimmedExpiryTime,
             description: trimmedDescription,
+            category: trimmedCategory,
 
             // Save uploaded image filename
             image: req.file.filename,
@@ -157,9 +170,15 @@ const getAllDonations = async (req, res) => {
         const search = req.query.search;
         const status = req.query.status;
         const location = req.query.location;
+        const category = req.query.category;
 
 
         let filter = {};
+
+        // Filter by donor ID if the user is a donor
+        if (req.user && req.user.role === "donor") {
+            filter.donor = req.user.id;
+        }
 
         //search by food name 
         if(search) {
@@ -185,12 +204,18 @@ const getAllDonations = async (req, res) => {
             };
         }
 
+        // filter by category
+        if(category) {
+            filter.category = category;
+        }
+
         //count Total donations
         const totalDonations = await Donation.countDocuments(filter);   //it give all donation according to filter condition 
 
         //fetch donations with pagination and sort
         const donations = await Donation.find(filter)    //filtering sorting and pagination
             .populate("donor", "name email phone")
+            .populate("claimedBy", "name email phone")
             .sort(sortOption)
             .skip(skip)
             .limit(limit);
@@ -229,6 +254,9 @@ const getAvailableDonations = async (req, res) => {
         }).populate(
             "donor",
             "name email phone"
+        ).populate(
+            "claimedBy",
+            "name email phone"
         );
 
         res.status(200).json({
@@ -259,6 +287,9 @@ const getClaimedDonations = async (req, res) => {
         }).populate(
             "donor",
             "name email phone"
+        ).populate(
+            "claimedBy",
+            "name email phone"
         );
 
         res.status(200).json({
@@ -288,6 +319,9 @@ const getDeliveredDonations = async (req, res) => {
         }).populate(
             "donor",
             "name email phone"
+        ).populate(
+            "claimedBy",
+            "name email phone"
         );
 
         res.status(200).json({
@@ -310,7 +344,9 @@ const getDonationById = async (req, res) => {
     try {
         const id = req.params.id;
 
-        const donation = await Donation.findById(id);
+        const donation = await Donation.findById(id)
+            .populate("donor", "name email phone")
+            .populate("claimedBy", "name email phone");
 
         res.status(200).json({
             success: true,
@@ -337,10 +373,15 @@ const updateDonation = async (req, res) => {
         const {
             foodName,
             quantity,
+            quantityUnit,
             location,
             expiryTime,
             description,
+            category,
         } = req.body;
+
+
+        const VALID_CATEGORIES = ["Cooked Food", "Packaged Food", "Dry Food", "Fresh Produce", "Beverages", "Other"];
 
         // Find donation
         const donation = await Donation.findById(id);
@@ -354,7 +395,7 @@ const updateDonation = async (req, res) => {
         }
 
         // Check owner
-        if (donation.donor.toString() !== req.user.id) {
+        if (donation.donor.toString() !== req.user.id && req.user.role !== "admin") {
             return res.status(403).json({
                 success: false,
                 message: "You are not authorized to update this donation",
@@ -439,6 +480,15 @@ const updateDonation = async (req, res) => {
             });
         }
 
+        // Category Validation
+        const trimmedCategory = category ? category.trim() : (donation.category || "Other");
+        if (!VALID_CATEGORIES.includes(trimmedCategory)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid food category",
+            });
+        }
+
         
         // IMAGE UPDATE
 
@@ -467,9 +517,11 @@ const updateDonation = async (req, res) => {
 
         donation.foodName = trimmedFoodName;
         donation.quantity = quantity;
+        if (quantityUnit) donation.quantityUnit = quantityUnit;
         donation.location = trimmedLocation;
         donation.expiryTime = trimmedExpiryTime;
         donation.description = trimmedDescription;
+        donation.category = trimmedCategory;
 
         // Save
         await donation.save();
@@ -507,7 +559,7 @@ const deleteDonation = async (req, res) => {
 
 
         // check owner
-        if(donation.donor.toString() != req.user.id) {
+        if(donation.donor.toString() != req.user.id && req.user.role !== "admin") {
             return res.status(403).json({
                 message: "You are not authorized to delete this donation",
             });
@@ -592,7 +644,7 @@ const claimDonation = async (req, res) => {
         donation.status = "Claimed";
 
         //save changes
-        await donation.save();
+        await donation.save({ validateBeforeSave: false });
 
         //response
         res.status(200).json({
@@ -652,7 +704,7 @@ const markAsDelivered = async (req, res) => {
         donation.status = "Delivered";
 
         // save donation
-        await donation.save();
+        await donation.save({ validateBeforeSave: false });
 
         //send success response
         res.status(200).json({
@@ -676,7 +728,7 @@ const searchDonation = async (req, res) => {
     try {
 
         //get query parameters
-        const { foodName, location, status, minQuantity, maxQuantity, sort, startDate, endDate } = req.query;
+        const { foodName, location, status, category, minQuantity, maxQuantity, sort, startDate, endDate } = req.query;
         
         //create dynamic filter 
         const filter = {};
@@ -717,6 +769,11 @@ const searchDonation = async (req, res) => {
         //search by status
         if(status) {
             filter.status = status;
+        }
+
+        // Filter by category
+        if (category) {
+            filter.category = category;
         }
 
         // Filter by Quantity

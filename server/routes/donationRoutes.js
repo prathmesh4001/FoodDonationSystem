@@ -90,7 +90,7 @@ router.get(
 router.put(
     "/update/:id",
     authMiddleware,
-    roleMiddleware("donor"),
+    roleMiddleware("donor", "admin"),
     (req, res, next) => {
 
         upload.single("image")(req, res, function (err) {
@@ -121,7 +121,7 @@ router.put(
 router.delete(
     "/delete/:id", 
     authMiddleware, 
-    roleMiddleware("donor"),
+    roleMiddleware("donor", "admin"),
     deleteDonation
 );
 
