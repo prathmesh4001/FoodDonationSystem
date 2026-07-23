@@ -7,7 +7,7 @@ A full-stack MERN application that connects food donors with NGOs and volunteers
 [![NodeJS](https://img.shields.io/badge/Node.js-18+-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
 [![ExpressJS](https://img.shields.io/badge/Express.js-5.x-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-Database-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
-[![License](https://img.shields.io/badge/License-ISC-blue.svg?style=for-the-badge)](https://opensource.org/licenses/ISC)
+
 
 > A modern, full-stack digital platform designed to bridge the gap between food donors (restaurants, hotels, events, individuals) and organizations/volunteers in need. By optimizing distribution logistics and listing real-time availability, this platform aims to drastically reduce food waste and support vulnerable communities.
 
